@@ -3,68 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PARANORMAL RANDOM ROULETTE</title>
+    
+    <title>超自然行动组：随机道具抽取</title>
+    
+    <meta name="apple-mobile-web-app-title" content="道具大转盘">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="apple-touch-icon" href="https://img.icons8.com/ios-filled/150/ff0000/ghost.png">
+
     <style>
-        :root { --primary-red: #ff3e3e; --bg-dark: #0a0a0b; --card-bg: #16161a; --gold: #ffcc00; }
-        body { font-family: 'Arial Black', "Microsoft YaHei", sans-serif; background: #000; background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #000 100%); color: #e0e0e0; margin: 0; padding: 20px; min-height: 100vh; overflow-x: hidden; }
-        .container { max-width: 600px; margin: 0 auto; text-align: center; }
-        .main-title { font-size: 1.8rem; color: #fff; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; white-space: nowrap; text-shadow: -1.5px 0 #ff0000, 1.5px 0 #00d4ff; margin: 20px 0 0 0; }
-        .sub-title { font-size: 1.1rem; color: var(--primary-red); font-weight: bold; letter-spacing: 5px; margin-top: 5px; margin-bottom: 25px; display: block; }
-        .config-panel { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 25px; border: 1px solid #333; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
-        .setting-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .setting-group { background: #222; padding: 8px 12px; border-radius: 12px; border-bottom: 2px solid var(--primary-red); display: flex; align-items: center; gap: 8px; font-size: 14px; }
-        select { background: #222 !important; color: white !important; border: none; font-size: 14px; outline: none; }
-        input[type="number"] { background: transparent; color: white; border: 1px solid #444; border-radius: 4px; padding: 2px; text-align: center; width: 35px; }
-        .btn-roll { background: var(--primary-red); color: white; border: none; padding: 15px; cursor: pointer; border-radius: 50px; font-size: 18px; font-weight: bold; box-shadow: 0 5px 20px rgba(255, 62, 62, 0.4); width: 100%; margin-top: 10px; }
-        .map-banner { font-size: 20px; color: var(--gold); margin: 20px 0; padding: 12px; background: rgba(255, 204, 0, 0.05); border: 1px solid var(--gold); border-radius: 15px; text-shadow: -1px 0 #0f0, 1px 0 #f00; font-weight: bold; }
-        .results-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 15px; }
-        .player-card { background: #1c1c22; border-radius: 15px; padding: 15px; text-align: left; border-left: 5px solid var(--primary-red); box-shadow: 0 10px 20px rgba(0,0,0,0.3); animation: slideUp 0.4s ease forwards; }
-        .label { color: #888; font-size: 0.8em; margin-top: 10px; text-transform: uppercase; }
-        .value { color: #fff; font-size: 1.1em; font-weight: bold; border-bottom: 1px solid #333; padding-bottom: 3px; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* 整体黑底红边的赛博感样式 */
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* 标题红光效果 */
+        h1 {
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #8b0000;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+        }
+
+        /* 显示抽取结果的区域 */
+        #result {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 15px #ff0000;
+            height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 20px;
+        }
+
+        /* 核心抽取按钮：红黑发光设计 */
+        #draw-btn {
+            background: linear-gradient(145deg, #330000, #000);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 1.2rem 3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 50px;
+            box-shadow: 0 0 15px #ff0000, inset 0 0 10px #330000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #draw-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 5px #ff0000;
+            background: #ff0000;
+            color: #000;
+        }
+
+        /* 底部提示文字 */
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            color: #444;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header-box">
-        <p class="main-title">PARANORMAL RANDOM ROULETTE</p>
-        <span class="sub-title">超自然行动组随机抽</span>
-    </div>
-    <div class="config-panel">
-        <div class="setting-row">
-            <div class="setting-group">👥 人数: <select id="pCount"><option value="1">1人</option><option value="2">2人</option><option value="3">3人</option><option value="4" selected>4人</option></select></div>
-            <div class="setting-group">🎒 道具数: <input type="number" id="minI" value="3" min="0" max="42"> - <input type="number" id="maxI" value="6" min="0" max="42"></div>
-        </div>
-        <div class="setting-row">
-            <div class="setting-group">🔄 重复: <select id="isRepeat"><option value="yes" selected>开启</option><option value="no">禁用</option></select></div>
-            <div class="setting-group">📢 沟通: <input type="checkbox" id="needComm" checked></div>
-        </div>
-        <button class="btn-roll" onclick="roll()">EXECUTE / 执行抽取</button>
-    </div>
-    <div id="mapResult"></div>
-    <div id="playerResults" class="results-grid"></div>
-</div>
-<script>
-    const gameData = {
-        maps: ["古城极限", "昆仑极限", "昆仑噩梦", "秦陵噩梦", "秦陵炼狱"],
-        roles: ["小黄", "爱丽丝", "零", "阿念", "逍遥", "薇薇安", "巫铃儿", "莉莉", "艾伦", "爱德华", "兰", "小满", "临云"],
-        items: ["手电", "专业手电", "铲子", "刺刀", "桃木剑", "折扇", "长枪", "长鞭", "伞", "电击枪", "黄牛能量饮料", "摸金符", "罗盘", "音响", "传送按钮", "短管猎枪", "闪光弹", "转轮手枪", "夜视仪", "喷气背包", "荧光棒", "除颤仪", "急救包", "粘液球", "葫芦"],
-        comms: ["古风小生", "快捷发言（不可打字）", "喵喵喵", "方言", "散装英语", "唱出来"]
-    };
-    function roll() {
-        let minInput = document.getElementById('minI'), maxInput = document.getElementById('maxI');
-        let min = Math.max(0, Math.min(42, parseInt(minInput.value) || 0)), max = Math.max(0, Math.min(42, parseInt(maxInput.value) || 0));
-        if (min > max) min = max; minInput.value = min; maxInput.value = max;
-        const count = parseInt(document.getElementById('pCount').value), repeat = document.getElementById('isRepeat').value, commOn = document.getElementById('needComm').checked;
-        document.getElementById('mapResult').innerHTML = `<div class="map-banner">TARGET MAP: ${gameData.maps[Math.floor(Math.random() * gameData.maps.length)]}</div>`;
-        let html = '';
-        for (let i = 1; i <= count; i++) {
-            let num = Math.floor(Math.random() * (max - min + 1)) + min, role = gameData.roles[Math.floor(Math.random() * gameData.roles.length)], pool = [...gameData.items], picks = [];
-            for (let j = 0; j < num; j++) { if (pool.length === 0) break; let idx = Math.floor(Math.random() * pool.length); picks.push(pool[idx]); if (repeat === "no") pool.splice(idx, 1); }
-            html += `<div class="player-card"><div style="color:var(--primary-red);font-weight:bold;"># PLAYER 0${i}</div><div class="label">👤 员工</div><div class="value">${role}</div><div class="label">🎒 道具 (${num}个)</div><div class="value" style="color:#00d4ff;font-size:0.95em;">${picks.join(" + ") || "无"}</div><div class="label">🗣️ 挑战</div><div class="value" style="border:none;color:#aaa;font-size:0.9em;">${commOn ? gameData.comms[Math.floor(Math.random() * gameData.comms.length)] : "无限制"}</div></div>`;
+
+    <h1>超自然行动组</h1>
+
+    <div id="result">准备好抽取了吗？</div>
+
+    <button id="draw-btn" onclick="drawItem()">START DRAW</button>
+
+    <div class="footer">由 Cloudflare Pages 提供永久支持</div>
+
+    <script>
+        // 在这里填写你的游戏道具列表
+        const items = ["道具 A", "道具 B", "道具 C", "道具 D", "道具 E", "道具 F"];
+
+        function drawItem() {
+            const btn = document.getElementById('draw-btn');
+            const resultDiv = document.getElementById('result');
+            
+            // 按钮禁用防止连点
+            btn.disabled = true;
+            resultDiv.style.opacity = "0.5";
+            
+            // 模拟随机滚动的视觉动画
+            let count = 0;
+            const interval = setInterval(() => {
+                const randomTemp = items[Math.floor(Math.random() * items.length)];
+                resultDiv.innerText = randomTemp;
+                count++;
+                
+                if (count > 10) {
+                    clearInterval(interval);
+                    // 最终确定结果
+                    const finalItem = items[Math.floor(Math.random() * items.length)];
+                    resultDiv.innerText = finalItem;
+                    resultDiv.style.opacity = "1";
+                    btn.disabled = false;
+                }
+            }, 80);
         }
-        document.getElementById('playerResults').innerHTML = html;
-    }
-</script>
+    </script>
 </body>
 </html>
